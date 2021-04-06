@@ -1,5 +1,4 @@
-{
-  "data": [
+const data = [
     {
       "id": 1,
       "name": "Iron Man",
@@ -124,4 +123,4 @@
       "movies": ["Avengers: Infinity War", "Doctor Strange"]
     }
   ]
-}
+export default data
