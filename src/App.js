@@ -1,52 +1,11 @@
+/* eslint-disable eqeqeq */
 import "./App.css";
-import { BrowserRouter as Router, Route, Link, Switch , useParams} from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { useState, useEffect } from "react";
-import data from './friendslist';
-
-const Home = () => (
-  <div id="home">
-    <h2>Home Component</h2>
-  </div>
-);
-
-const Friends = ({friends}) => {
-
-  return (
-    <div id="friends">
-      <h2>Friends Component</h2>
-      {friends.map((friend, index) => (
-        <Friend
-          key={index}
-          name={friend.name}
-          thumbnail={friend.thumbnail}
-          id={friend.id}
-        />
-      ))}
-    </div>
-  );
-};
-
-const Friend = ({ name, thumbnail, id }) => {
-  return (
-    <div className="friend">
-      <img src={thumbnail} alt={name} />
-      <h3>{name}</h3>
-      <Link to={`/friends/${id}`}>Details</Link>
-    </div>
-  );
-};
-
-const FriendDetail = ({friends}) => {
-  const friendID = useParams();
-  const activeFriend = friends.filter(fr => fr.id === friendID)[0];
-  
-  console.log(activeFriend)
-  return (
-    <div className="friendDetail">
-      FRIEND_DETAIL
-    </div>
-  );
-};
+import data from "./Data/friendslist";
+import Home from "./Components/Home";
+import Friends from "./Components/Friends";
+import FriendDetail from "./Components/FriendDetail";
 
 function App() {
   const [friends, setFriends] = useState([]);
@@ -64,12 +23,11 @@ function App() {
         </nav>
         <div className="app">
           <Switch>
-            <Route exact path='/friends' >
-              <Friends friends={friends} />
-            </Route>
-            {/* <Route path="/friends/:id" component={FriendDetail} /> */}
-            <Route path="/friends/:id" >
+            <Route path="/friends/:id">
               <FriendDetail friends={friends} />
+            </Route>
+            <Route path="/friends">
+              <Friends friends={friends} />
             </Route>
             <Route path="/" component={Home} />
           </Switch>
