@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch , useParams} from "react-router-dom";
 import { useState, useEffect } from "react";
 import data from './friendslist';
 
@@ -9,9 +9,7 @@ const Home = () => (
   </div>
 );
 
-const Friends = () => {
-  const [friends, setFriends] = useState([]);
-  useEffect(() => setFriends(data), []);
+const Friends = ({friends}) => {
 
   return (
     <div id="friends">
@@ -38,27 +36,21 @@ const Friend = ({ name, thumbnail, id }) => {
   );
 };
 
-const FriendDetail = ({ id, name, nickname, description, img, movies }) => {
+const FriendDetail = ({friends}) => {
+  const friendID = useParams();
+  const activeFriend = friends.filter(fr => fr.id === friendID)[0];
+  
+  console.log(activeFriend)
   return (
     <div className="friendDetail">
-      <h2>
-        {name}, aka {nickname}
-      </h2>
-      <img src={img} alt={name} />
-      <p>{description}</p>
-      <ul>
-        Movies
-        {movies.map((movie, index) => (
-          <li className="movie" key={`${id}_${index}`}>
-            {movie}
-          </li>
-        ))}
-      </ul>
+      FRIEND_DETAIL
     </div>
   );
 };
 
 function App() {
+  const [friends, setFriends] = useState([]);
+  useEffect(() => setFriends(data), []);
   return (
     <div className="App">
       <Router>
@@ -72,9 +64,14 @@ function App() {
         </nav>
         <div className="app">
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/friends" component={Friends} />
-            <Route path="/friends/:id" component={FriendDetail} />
+            <Route exact path='/friends' >
+              <Friends friends={friends} />
+            </Route>
+            {/* <Route path="/friends/:id" component={FriendDetail} /> */}
+            <Route path="/friends/:id" >
+              <FriendDetail friends={friends} />
+            </Route>
+            <Route path="/" component={Home} />
           </Switch>
         </div>
       </Router>
